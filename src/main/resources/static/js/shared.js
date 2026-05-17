@@ -62,7 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const logo = document.querySelector('.symbol-logo-outside');
 
         if (!sidebar || !sidebar.classList.contains('open')) return;
-        if (sidebar.contains(e.target) || (logo && logo.contains(e.target))) return;
+        if (logo && logo.contains(e.target)) return;
+        if (e.target.closest('.menu-item')) return;
 
         closeSidebar();
     });
