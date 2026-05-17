@@ -1,0 +1,73 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: tripton
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Grant execute permission for Gradle
+        run: chmod +x ./gradlew
+
+      - name: Test
+        run: ./gradlew test
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+      - name: Deploy on EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            set -e
+
+            IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest"
+
+            docker pull "$IMAGE"
+            docker stop tripton || true
+            docker rm tripton || true
+
+            docker run -d \
+              --name tripton \
+              --restart unless-stopped \
+              -p 80:8080 \
+              -e SPRING_PROFILES_ACTIVE=docker \
+              -e SERVER_PORT=8080 \
+              -e ADMIN_LOGIN_ID='${{ secrets.ADMIN_LOGIN_ID }}' \
+              -e ADMIN_PASSWORD='${{ secrets.ADMIN_PASSWORD }}' \
+              -e H2_CONSOLE_ENABLED=true \
+              "$IMAGE"
+
+            docker image prune -f
