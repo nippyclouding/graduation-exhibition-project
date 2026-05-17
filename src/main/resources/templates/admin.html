@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('ADMIN', '/css/admin.css')}"></th:block>
+</head>
+<body class="admin-background">
+
+<th:block th:replace="~{fragments/layout :: app-chrome}"></th:block>
+
+<main class="admin-wrap">
+    <section class="admin-summary" aria-label="관리자 요약 정보">
+        <div class="summary-block summary-block--center">
+            <span class="summary-label">총 고민 수 :</span>
+            <span class="summary-value" id="total-concern-count">0</span>
+        </div>
+    </section>
+
+    <section class="admin-grid" aria-label="관리자 데이터 목록">
+        <article class="admin-panel" data-panel="concerns">
+            <header class="admin-panel-header">
+                <h2>CONCERNS</h2>
+                <span class="panel-meta" id="concerns-page-meta">0 / 0</span>
+            </header>
+            <div class="admin-list" id="concerns-list"></div>
+            <footer class="admin-pagination">
+                <button type="button" class="page-btn" data-panel="concerns" data-direction="prev">&#8592;</button>
+                <button type="button" class="page-btn" data-panel="concerns" data-direction="next">&#8594;</button>
+            </footer>
+        </article>
+    </section>
+</main>
+
+<th:block th:replace="~{fragments/common-scripts :: music-scripts}"></th:block>
+<script src="/js/admin.js" defer></script>
+
+</body>
+</html>

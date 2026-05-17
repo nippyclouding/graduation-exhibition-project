@@ -1,0 +1,78 @@
+### Gradle / Spring Boot ###
+.gradle/
+build/
+out/
+target/
+bin/
+*.class
+
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### Logs ###
+logs/
+*.log
+*.log.*
+
+### Environment / Secrets ###
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+
+application-local.properties
+application-local.yml
+application-local.yaml
+application-secret.properties
+application-secret.yml
+application-secret.yaml
+
+### IDE ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+.vscode/
+
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### OS / Editor ###
+.DS_Store
+**/.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+### Local Notes / Tooling ###
+.claude/
+.codex/
+test.md
+todolist.md
+
+### Project Docs Source / Generated Help ###
+HELP.md
+README_IMG_SOURCE/

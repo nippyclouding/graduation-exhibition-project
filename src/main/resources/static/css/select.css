@@ -1,0 +1,929 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url('/image/select/Background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* 중앙 가방 이미지 컨테이너 */
+.bag-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    cursor: pointer;
+}
+
+.bag-container img {
+    max-width: min(500px, 60vw);
+    max-height: min(500px, 60vh);
+    transition: transform 0.3s ease;
+}
+
+.bag-container img:hover {
+    transform: scale(1.1);
+}
+
+/* 하단 컨트롤 영역 */
+.bottom-controls {
+    position: fixed;
+    bottom: min(50px, 5vh);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: min(30px, 4vw);
+    z-index: 10;
+}
+
+/* ============================
+   투명 버튼 공통 스타일
+   ============================ */
+.arrow-btn,
+.about-btn,
+.modal-arrow-btn,
+.modal-close-btn,
+.input-modal-arrow-btn,
+.input-modal-close-btn {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.arrow-btn:hover,
+.about-btn:hover,
+.modal-arrow-btn:hover,
+.modal-close-btn:hover,
+.input-modal-arrow-btn:hover,
+.input-modal-close-btn:hover {
+    transform: scale(1.1);
+}
+
+.arrow-btn:active,
+.about-btn:active,
+.modal-arrow-btn:active,
+.modal-close-btn:active,
+.input-modal-arrow-btn:active,
+.input-modal-close-btn:active {
+    transform: scale(0.95);
+}
+
+/* 화살표 버튼 */
+.arrow-btn img {
+    width: min(25px, 4vw);
+    height: min(20px, 3.2vw);
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    display: block;
+}
+
+/* about 버튼 */
+.about-btn img {
+    width: min(80px, 12vw);
+    height: auto;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    display: block;
+}
+
+.about-btn:hover img {
+    opacity: 1;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+}
+
+.moving-text {
+    pointer-events: none;
+}
+
+.moving-text img {
+    height: auto;
+    width: auto;
+    max-height: 1000px;
+}
+
+.waiting-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(8px);
+}
+
+.waiting-overlay.show {
+    display: flex;
+}
+
+.waiting-content {
+    position: relative;
+    width: min(74vw, 760px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.waiting-content.hide {
+    display: none;
+}
+
+.waiting-title-image {
+    width: min(72vw, 680px);
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.45));
+}
+
+.waiting-arrow-image {
+    position: fixed;
+    bottom: max(58px, env(safe-area-inset-bottom));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9001;
+    width: clamp(45px, 8vw, 60px);
+    height: auto;
+    display: block;
+    opacity: 0.8;
+    cursor: pointer;
+    pointer-events: auto;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.waiting-arrow-image:hover {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.1);
+}
+
+.waiting-arrow-image:active {
+    transform: translateX(-50%) scale(0.95);
+}
+
+.weight-content {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+}
+
+.weight-content.show {
+    display: block;
+}
+
+.weight-title-image {
+    width: min(62vw, 350px);
+    height: auto;
+    display: block;
+    position: fixed;
+    top: clamp(42px, 7vh, 72px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9003;
+}
+
+.weight-line-image {
+    width: min(28vw, 144px);
+    height: auto;
+    display: block;
+    position: fixed;
+    top: clamp(100px, 14vh, 132px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9003;
+}
+
+.blackhole-image {
+    width: min(173vw, 1344px);
+    max-width: none;
+    max-height: none;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, calc(-50% + 116px));
+    z-index: 9002;
+}
+
+.blackhole-weight-image {
+    width: min(28vw, 116px);
+    height: auto;
+    display: block;
+    position: fixed;
+    left: 50%;
+    bottom: clamp(108px, 14vh, 142px);
+    transform: translateX(-50%);
+    z-index: 9003;
+}
+
+.waiting-decoration {
+    position: absolute;
+    width: clamp(44px, 8vw, 86px);
+    height: auto;
+    opacity: 0;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
+}
+
+.waiting-decoration-1 {
+    left: clamp(-62px, -5.5vw, -36px);
+    top: clamp(-86px, -7.5vw, -52px);
+    animation: waitingBlinkOne 1s steps(1, end) infinite;
+}
+
+.waiting-decoration-2 {
+    right: clamp(-62px, -5.5vw, -36px);
+    bottom: clamp(-88px, -7.5vw, -52px);
+    animation: waitingBlinkTwo 1s steps(1, end) infinite;
+}
+
+@keyframes waitingBlinkOne {
+    0%, 49.999% {
+        opacity: 1;
+    }
+    50%, 100% {
+        opacity: 0;
+    }
+}
+
+@keyframes waitingBlinkTwo {
+    0%, 49.999% {
+        opacity: 0;
+    }
+    50%, 100% {
+        opacity: 1;
+    }
+}
+
+/* 가방 이미지 슬라이드 애니메이션 */
+.bag-slide-left {
+    animation: slideLeft 0.5s ease-in-out;
+}
+
+.bag-slide-right {
+    animation: slideRight 0.5s ease-in-out;
+}
+
+@keyframes slideLeft {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(-100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideRight {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ============================
+   아이템 소개 모달
+   ============================ */
+
+.item-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 3000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-modal.show {
+    display: flex;
+}
+
+.modal-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(13px);
+    cursor: pointer;
+}
+
+.modal-content {
+    position: relative;
+    max-width: min(500px, 75vw);
+    max-height: min(75vh, 500px);
+    z-index: 3001;
+    animation: modalFadeIn 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-content img {
+    width: min(70vw, 500px);
+    max-width: 100%;
+    height: auto;
+    max-height: min(65vh, 450px);
+    object-fit: contain;
+}
+
+/* 모달 버튼 컨테이너 */
+.modal-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(12px, 2.5vw, 18px);
+    margin-top: clamp(15px, 3vw, 25px);
+}
+
+/* 모달 화살표 버튼 */
+.modal-arrow-btn img {
+    width: clamp(35px, 6vw, 50px);
+    height: auto;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    display: block;
+}
+
+.modal-arrow-btn:hover img {
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
+}
+
+/* 모달 닫기 버튼 */
+.modal-close-btn img {
+    width: clamp(30px, 5vw, 40px);
+    height: auto;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    display: block;
+}
+
+.modal-close-btn:hover img {
+    opacity: 1;
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
+}
+
+/* 모달 페이드인 애니메이션 */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ESC 키나 배경 클릭으로 닫을 때 애니메이션 */
+.item-modal.closing .modal-content {
+    animation: modalFadeOut 0.3s ease-in;
+}
+
+@keyframes modalFadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+/* 폼 요소도 투명 처리 */
+form {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: transparent !important;
+    display: inline-block;
+}
+
+input[type="hidden"] {
+    border: none;
+    outline: none;
+}
+
+/* 작은 화면용 반응형 스타일 */
+@media screen and (max-width: 768px) {
+    .modal-content {
+        max-width: 90vw;
+        max-height: 80vh;
+    }
+
+    .modal-content img {
+        width: min(85vw, 400px);
+        max-height: min(60vh, 350px);
+    }
+
+    .bottom-controls {
+        gap: min(20px, 3vw);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .modal-content {
+        max-width: 95vw;
+        max-height: 85vh;
+    }
+
+    .modal-content img {
+        width: min(90vw, 350px);
+        max-height: min(55vh, 300px);
+    }
+
+    .modal-buttons {
+        gap: clamp(8px, 2vw, 12px);
+        margin-top: clamp(10px, 2vw, 15px);
+    }
+
+    .bottom-controls {
+        gap: min(15px, 2vw);
+    }
+}
+
+/* ============================
+   사용자 입력 모달 스타일
+   ============================ */
+
+.input-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    min-height: 100vh;
+    z-index: 4000;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    padding: clamp(40px, 6vh, 60px) 0 clamp(30px, 4vh, 40px) 0;
+}
+
+.input-modal.show {
+    display: flex;
+}
+
+.input-modal-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(13px);
+}
+
+/* 모달 외부 상단 타이틀 */
+.input-modal-title {
+    position: relative;
+    z-index: 4002;
+    margin-bottom: clamp(20px, 3vh, 30px);
+    margin-top: clamp(30px, 5vh, 40px);
+    text-align: center;
+    color: white;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-modal-title h2 {
+    font-size: clamp(18px, 3.5vw, 28px);
+    font-weight: 600;
+    margin-bottom: clamp(8px, 1.5vh, 10px);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    letter-spacing: -0.5px;
+}
+
+.input-modal-title p {
+    font-size: clamp(18px, 3.5vw, 28px);
+    font-weight: 600;
+    margin: 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    letter-spacing: -0.5px;
+}
+
+/* 모달 컨테이너 내부 상단 이미지 */
+.input-modal-inner-image {
+    text-align: center;
+    margin-bottom: clamp(20px, 3vh, 30px);
+    width: 100%;
+}
+
+.input-modal-inner-image img {
+    width: clamp(150px, 20vw, 250px);
+    height: auto;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+}
+
+.input-modal-content {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);        
+    backdrop-filter: blur(20px);                  
+    border-radius: clamp(15px, 2.5vw, 20px);                         
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); 
+    padding: clamp(25px, 4vw, 50px) clamp(15px, 3vw, 40px) clamp(15px, 3vw, 40px) clamp(15px, 3vw, 40px);
+    max-width: min(600px, 85vw);
+    width: 85%;
+    margin: 0 auto clamp(30px, 5vh, 40px) auto;
+    margin-top: clamp(15px, 2vh, 20px);
+    min-height: clamp(450px, 65vh, 650px);
+    z-index: 4001;
+    animation: inputModalFadeIn 0.4s ease-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.input-modal-body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-container {
+    margin-bottom: clamp(15px, 3vh, 25px);
+    width: 100%;
+}
+
+.input-container textarea,
+.input-container input[type="text"],
+.input-container input[type="password"] {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: clamp(8px, 1.5vw, 15px);
+    padding: clamp(12px, 2.5vw, 25px);
+    color: white;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    font-family: inherit;
+    text-align: center;
+}
+
+.input-container textarea {
+    resize: vertical;
+    min-height: clamp(100px, 15vh, 180px);
+    line-height: 1.5;
+    font-size: clamp(12px, 2vw, 16px);
+}
+
+.input-container input[type="text"],
+.input-container input[type="password"] {
+    height: clamp(40px, 6vh, 60px);
+    font-size: clamp(12px, 2vw, 16px);
+}
+
+.input-container textarea::placeholder,
+.input-container input[type="text"]::placeholder,
+.input-container input[type="password"]::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+}
+
+.input-container textarea:focus,
+.input-container input[type="text"]:focus,
+.input-container input[type="password"]:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.input-modal-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(12px, 2.5vw, 20px);
+}
+
+/* 입력 모달 화살표 버튼 */
+.input-modal-arrow-btn img {
+    width: clamp(35px, 6vw, 60px);
+    height: auto;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    display: block;
+}
+
+.input-modal-arrow-btn:hover img {
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
+}
+
+/* 입력 모달 닫기 버튼 */
+.input-modal-close-btn img {
+    width: clamp(30px, 5vw, 50px);
+    height: auto;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    display: block;
+}
+
+.input-modal-close-btn:hover img {
+    opacity: 1;
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
+}
+
+/* 입력 모달 애니메이션 */
+@keyframes inputModalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.input-modal.closing .input-modal-content {
+    animation: inputModalFadeOut 0.3s ease-in;
+}
+
+.input-modal.closing .input-modal-title {
+    animation: inputModalFadeOut 0.3s ease-in;
+}
+
+@keyframes inputModalFadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+}
+
+/* 입력 모달 반응형 스타일 */
+@media screen and (max-width: 768px) {
+    .input-modal {
+        padding: clamp(20px, 4vw, 30px) 0;
+    }
+    
+    .input-modal-content {
+        margin: clamp(5px, 2vw, 10px);
+        max-width: 95vw;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .input-modal {
+        padding: clamp(15px, 3vw, 20px) 0;
+    }
+    
+    .input-modal-content {
+        max-width: 98vw;
+    }
+    
+    .input-modal-inner-image img {
+        width: clamp(130px, 18vw, 160px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body {
+        min-height: 100svh;
+        background-attachment: scroll;
+        overflow-x: hidden;
+    }
+
+    .bag-container {
+        top: 47%;
+    }
+
+    .bag-container img {
+        max-width: min(76vw, 340px);
+        max-height: min(48svh, 340px);
+    }
+
+    .bottom-controls {
+        bottom: max(82px, calc(env(safe-area-inset-bottom) + 58px));
+        gap: 18px;
+    }
+
+    .arrow-btn img {
+        width: 28px;
+        height: auto;
+    }
+
+    .about-btn img {
+        width: 82px;
+        max-width: 24vw;
+    }
+
+    .moving-text img {
+        max-height: 68svh;
+    }
+
+    .item-modal,
+    .input-modal {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100svh;
+        min-height: 100svh;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .item-modal.show {
+        align-items: center;
+        justify-content: center;
+        padding: 60px 14px 94px;
+    }
+
+    .modal-content {
+        max-width: 100%;
+        max-height: none;
+    }
+
+    .modal-content img {
+        width: min(88vw, 360px);
+        max-height: calc(100svh - 220px);
+    }
+
+    .modal-buttons {
+        flex-direction: row;
+        justify-content: center;
+        gap: 22px;
+        margin-top: 16px;
+    }
+
+    .modal-arrow-btn img,
+    .input-modal-arrow-btn img {
+        width: 44px;
+    }
+
+    .modal-close-btn img,
+    .input-modal-close-btn img {
+        width: 38px;
+    }
+
+    .input-modal.show {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 54px 14px 92px;
+    }
+
+    .input-modal-background {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .input-modal-title {
+        flex: 0 0 auto;
+        margin: 0 0 14px;
+        padding: 0 8px;
+    }
+
+    .input-modal-title h2,
+    .input-modal-title p {
+        font-size: clamp(17px, 5.4vw, 22px);
+        line-height: 1.25;
+        letter-spacing: 0;
+    }
+
+    .input-modal-content {
+        width: min(100%, 420px);
+        max-width: 100%;
+        min-height: 0;
+        margin: 0 auto;
+        padding: 20px 16px 18px;
+        border-radius: 16px;
+    }
+
+    .input-modal-inner-image {
+        margin-bottom: 16px;
+    }
+
+    .input-modal-inner-image img {
+        width: min(180px, 48vw);
+    }
+
+    .input-modal-body,
+    #concern-form {
+        width: 100%;
+    }
+
+    #concern-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .input-container {
+        margin-bottom: 12px;
+    }
+
+    .input-container textarea,
+    .input-container input[type="text"],
+    .input-container input[type="password"] {
+        padding: 13px 12px;
+        font-size: 15px;
+        border-radius: 10px;
+        text-align: left;
+    }
+
+    .input-container input[type="text"],
+    .input-container input[type="password"] {
+        height: 46px;
+    }
+
+    .input-container textarea {
+        min-height: 122px;
+        max-height: 32svh;
+    }
+
+    .input-modal-buttons {
+        flex-direction: row;
+        justify-content: center;
+        gap: 24px;
+        margin-top: 2px;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .input-modal.show {
+        padding-top: 44px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .input-modal-content {
+        padding: 16px 12px 14px;
+    }
+
+    .input-modal-inner-image {
+        margin-bottom: 12px;
+    }
+
+    .input-container textarea {
+        min-height: 104px;
+    }
+}

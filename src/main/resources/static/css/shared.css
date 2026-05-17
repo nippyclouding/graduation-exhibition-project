@@ -1,0 +1,335 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Roboto+Condensed:wght@100..900&display=swap');
+
+/* ============================
+   공통 초기화
+   ============================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body.admin-background,
+body.error-page,
+.background {
+    background-image: url('/image/sharedImage/deepDark.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+body.admin-background {
+    background-attachment: fixed;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.admin-login-form,
+.admin-panel {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 16px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+/* ============================
+   공통 컴포넌트 스타일
+   ============================ */
+
+/* 좌측 하단 - 심볼N 로고 */
+.symbol-logo {
+    position: fixed;
+    bottom: min(30px, 3vh);
+    left: min(30px, 3vw);
+    z-index: 1000;
+    cursor: pointer;
+}
+
+/* 우측 하단에 배치 (기존 위치 유지) */
+.sound-toggle-container {
+    position: fixed;
+    bottom: min(30px, 3vh);
+    right: min(30px, 3vw);  
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: clamp(3px, 1vw, 5px);  
+}
+
+.sound-toggle-btn {
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: clamp(3px, 1vw, 5px);
+}
+
+/* 사운드 상태 아이콘 (line.png 또는 dot.gif) */
+.sound-status-icon {
+    width: clamp(16px, 3vw, 20px);
+    height: clamp(16px, 3vw, 20px);
+    object-fit: contain;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+/* 사운드 로고 */
+.sound-logo {
+    width: clamp(30px, 6vw, 40px);  
+    height: clamp(30px, 6vw, 40px);
+    object-fit: contain;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.sound-toggle-btn:hover {
+    transform: scale(1.1);
+}
+
+.sound-toggle-btn:hover .sound-status-icon,
+.sound-toggle-btn:hover .sound-logo {
+    opacity: 1;
+}
+
+.sound-toggle-btn:active {
+    transform: scale(0.95);
+}
+/* ============================
+   사이드바 스타일
+   ============================ */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: max(-400px, -50vw);
+    width: min(400px, 50vw);
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 2000;
+    transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar-content {
+    padding: clamp(40px, 6vw, 60px) clamp(30px, 5vw, 50px);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-close {
+    position: absolute;
+    top: min(30px, 3vh);
+    right: min(30px, 4vw);
+    width: clamp(30px, 5vw, 40px);
+    height: clamp(30px, 5vw, 40px);
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: clamp(20px, 4vw, 28px);
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.sidebar-close:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.1);
+}
+
+.sidebar-menu {
+    margin-top: clamp(10px, 2vh, 20px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(35px, 6vh, 50px);
+}
+
+.menu-item {
+    cursor: pointer;
+    padding: 0;
+    margin: 5px 0;
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-item.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.menu-item img {
+    width: clamp(194px, 24vw, 324px);
+    height: auto;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.menu-item:hover img {
+    transform: scale(1.1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+.menu-item:active img {
+    transform: scale(0.95);
+}
+
+/* SIGN 텍스트 메뉴 아이템 - 이미지 버튼과 동일한 outline 스타일 */
+.sidebar-text-item {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: clamp(50px, 6.3vw, 84px);
+    color: rgba(255, 255, 255, 0.92);
+    -webkit-text-stroke: 0;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    transition: all 0.3s ease;
+    display: inline-block;
+    width: clamp(194px, 24vw, 324px);
+    text-align: center;
+    line-height: 1;
+}
+
+.menu-item-text:hover .sidebar-text-item {
+    transform: scale(1.1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+    color: white;
+}
+
+.menu-item-text:active .sidebar-text-item {
+    transform: scale(0.95);
+}
+
+/* 사이드바 오버레이 (블러 배경) */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(13px);
+    -webkit-backdrop-filter: blur(13px);
+    z-index: 1500;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+}
+
+.sidebar-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ============================
+   좌측 하단 - 심볼N 로고
+   ============================ */
+
+/* 공통 심볼 로고 이미지 스타일 */
+.symbol-logo img,
+.symbol-logo-outside img,
+.symbol-logo-inside img {
+    width: clamp(40px, 8vw, 60px);
+    height: auto;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.symbol-logo:hover img,
+.symbol-logo-outside:hover img,
+.symbol-logo-inside:hover img {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* 외부용 - 사이드바 닫혔을 때 */
+.symbol-logo-outside {
+    position: fixed;
+    bottom: min(30px, 3vh);
+    left: min(30px, 3vw);
+    z-index: 1000;
+    cursor: pointer;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.sidebar.open ~ .symbol-logo-outside {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* 사이드바 내부 좌측 하단 로고 */
+.symbol-logo-inside {
+    position: absolute;
+    bottom: min(30px, 3vh);
+    left: min(30px, 3vw);
+    cursor: pointer;
+}
+
+/* ============================
+   공통 유틸
+   ============================ */
+.hidden { display: none !important; }
+
+@media (max-width: 768px) {
+    .sidebar {
+        left: -82vw;
+        width: 82vw;
+        max-width: 360px;
+    }
+
+    .sidebar-content {
+        padding: 56px 24px 28px;
+    }
+
+    .sidebar-menu {
+        gap: 32px;
+    }
+
+    .sidebar-text-item {
+        width: 100%;
+        font-size: clamp(42px, 15vw, 68px);
+    }
+
+    .menu-item img {
+        width: min(220px, 62vw);
+    }
+
+    .symbol-logo-outside,
+    .symbol-logo-inside {
+        bottom: max(18px, env(safe-area-inset-bottom));
+        left: 18px;
+    }
+
+    .sound-toggle-container {
+        right: 18px;
+        bottom: max(18px, env(safe-area-inset-bottom));
+    }
+
+}

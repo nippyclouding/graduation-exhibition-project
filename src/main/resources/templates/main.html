@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Roboto+Condensed:wght@100..900&display=swap" rel="stylesheet">
+    <th:block th:replace="~{fragments/layout :: head('TripToN', '/css/main.css')}"></th:block>
+</head>
+<body class="main-background">
+
+    <th:block th:replace="~{fragments/layout :: app-chrome}"></th:block>
+
+    <!-- 하단 중앙 화살표 버튼 -->
+    <div class="arrow-button-container">
+        <a href="/story" class="arrow-btn">
+            <img src="/image/main/arrow.png" alt="소개 페이지로 이동">
+        </a>
+    </div>
+
+    <th:block th:replace="~{fragments/common-scripts :: music-scripts}"></th:block>
+
+</body>
+</html>

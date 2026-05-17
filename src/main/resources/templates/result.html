@@ -1,0 +1,37 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('전체 고민 목록', '/css/result.css')}"></th:block>
+</head>
+<body>
+    <!-- 배경 이미지 -->
+    <div class="background"></div>
+
+    <th:block th:replace="~{fragments/layout :: app-chrome}"></th:block>
+
+    <!-- 메인 컨테이너 -->
+    <div class="container">
+        <!-- 잠수함 이미지 -->
+        <div class="submarine-container">
+            <img src="/image/result/submarine.png" alt="submarine" class="submarine" id="submarine">
+        </div>
+
+        <!-- 가방 이미지들 (숨겨진 상태로 시작) -->
+        <div class="luggage-circle" id="luggageCircle">
+            <div th:each="concern : ${concernResponseDto}"
+                 class="luggage-item"
+                 th:data-lid="${concern.concernId}"
+                 th:data-title="${concern.concernTitle}">
+                <img th:src="|/image/sharedImage/item${concern.luggageType.ordinal() + 1}.png|"
+                     th:alt="${concern.luggageType}"
+                     class="luggage-img"/>
+                <div class="username-label" th:text="${concern.concernTitle}"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/js/result.js"></script>
+    <th:block th:replace="~{fragments/common-scripts :: music-scripts}"></th:block>
+</body>
+</html>

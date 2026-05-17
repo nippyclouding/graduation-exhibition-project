@@ -1,0 +1,16 @@
+services:
+  tripton:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tripton:local
+    container_name: tripton
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8080
+      ADMIN_LOGIN_ID: ${ADMIN_LOGIN_ID:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin}
+      H2_CONSOLE_ENABLED: ${H2_CONSOLE_ENABLED:-true}
+    restart: unless-stopped
